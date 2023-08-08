@@ -38,9 +38,6 @@ def filter_datum(fields: List, redaction: str,
     regex = re.compile(fr"({'|'.join(fields)})=[^{separator}]+")
     return regex.sub(fr"\1={redaction}", message)
 """
-
-
-import logging
 import re
 from typing import List
 
