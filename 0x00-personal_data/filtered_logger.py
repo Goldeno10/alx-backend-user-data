@@ -34,13 +34,19 @@ from typing import List
 #     return ';'.join(list(li))
 
 
-def filter_datum(fields, redaction, message, separator):
-    regex_pattern = r'({})'.format('|'.join(fields))
-    return re.sub(regex_pattern, f"{regex_pattern}={redaction}", message)
+# def filter_datum(fields, redaction, message, separator):
+#     regex_pattern = r'({})'.format('|'.join(fields))
+#     return re.sub(regex_pattern, f"{regex_pattern}={redaction}", message)
 
 
 # def filter_datum(fields: List, redaction: str,
 #                  message: str, separator: str) -> str:
 #     """ that returns the log message obfuscated """
-#     regex = re.compile(fr"({'|'.join(fields)})=[^{separator}]+")
-#     return regex.sub(fr"\1={redaction}", message)
+    # regex = re.compile(fr"({'|'.join(fields)})=[^{separator}]+")
+    # return regex.sub(fr"\1={redaction}", message)
+    
+# def filter_datum(fields, redaction, message, separator):
+def filter_datum(fields: List, redaction: str,
+                 message: str, separator: str) -> str:
+    """ that returns the log message obfuscated """
+    return re.sub(fr'({"|".join(fields)})=[^{separator}]+', fr'\1={redaction}', message)
