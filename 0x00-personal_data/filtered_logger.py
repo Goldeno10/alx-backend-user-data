@@ -36,7 +36,6 @@ from typing import List
 
 def filter_datum(fields, redaction, message, separator):
     regex_pattern = r'({})'.format('|'.join(fields))
-    print('pattern >>> ', regex_pattern)
     return re.sub(regex_pattern, f"{regex_pattern}={redaction}", message)
 
 
