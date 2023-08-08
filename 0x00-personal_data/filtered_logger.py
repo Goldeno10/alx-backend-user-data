@@ -21,17 +21,17 @@ import re
 from typing import List
 
 
-# def filter_datum(fields: List,
-#                  redaction: str,
-#                  message: str,
-#                  separator: str) -> str:
-#     """ that returns the log message obfuscated """
-#     message = message.split(separator)
-#     li = []
-#     for data in message:
-#         li.append(f"{data.split('=')[0]}={redaction}"
-#               if data.split('=')[0] in fields else data)
-#     return ';'.join(list(li))
+def filter_datum(fields: List,
+                 redaction: str,
+                 message: str,
+                 separator: str) -> str:
+    """ that returns the log message obfuscated """
+    message = message.split(separator)
+    li = []
+    for data in message:
+        li.append(f"{data.split('=')[0]}={redaction}"
+              if data.split('=')[0] in fields else data)
+    return ';'.join(list(li))
 
 
 # def filter_datum(fields, redaction, message, separator):
@@ -40,8 +40,8 @@ from typing import List
 #     return re.sub(regex_pattern, f"{regex_pattern}={redaction}", message)
 
 
-def filter_datum(fields: List, redaction: str,
-                 message: str, separator: str) -> str:
-    """ that returns the log message obfuscated """
-    regex = re.compile(fr"({'|'.join(fields)})=[^{separator}]+")
-    return regex.sub(fr"\1={redaction}", message)
+# def filter_datum(fields: List, redaction: str,
+#                  message: str, separator: str) -> str:
+#     """ that returns the log message obfuscated """
+#     regex = re.compile(fr"({'|'.join(fields)})=[^{separator}]+")
+#     return regex.sub(fr"\1={redaction}", message)
