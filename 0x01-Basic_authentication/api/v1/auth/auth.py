@@ -6,9 +6,10 @@ from typing import List, TypeVar
 
 
 class Auth:
+    """ Handles Basic Authentiction
+    """
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
-        """ Checks if auth is required
-        """
+        """Checks if auth is required"""
         if path is None:
             return True
 
@@ -17,7 +18,11 @@ class Auth:
 
         normalized_path = path.rstrip('/') + '/'
         for excluded_path in excluded_paths:
-            if normalized_path == excluded_path:
+            if excluded_path.endswith('*'):
+                prefix = excluded_path[:-1]  # Remove the asterisk
+                if normalized_path.startswith(prefix):
+                    return False
+            elif normalized_path == excluded_path:
                 return False
 
         return True

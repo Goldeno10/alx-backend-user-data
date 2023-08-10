@@ -57,7 +57,7 @@ def check_auth_and_authorization():
                 abort(401)
 
             current_user = auth.current_user(request)
-            if current_user is None:
+            if current_user:
                 abort(403)
 
 
