@@ -33,7 +33,7 @@ class DB:
             self.__session = DBSession()
         return self.__session
 
-    def add_user(self, email: str, password: str) -> User:
+    def add_user(self, email: str, hashed_password: str) -> User:
         """Add a new user to the database.
 
         Args:
@@ -43,11 +43,6 @@ class DB:
         Returns:
             User: Created User object.
         """
-        import bcrypt
-
-        hashed_password = bcrypt.hashpw(
-            password,
-            bcrypt.gensalt())  # .decode("utf-8")
         new_user = User()
         new_user.email = email
         new_user.hashed_password = hashed_password
