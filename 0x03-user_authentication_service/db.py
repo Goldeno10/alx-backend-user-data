@@ -48,7 +48,7 @@ class DB:
 
         hashed_password = bcrypt.hashpw(
             password,
-            bcrypt.gensalt()).decode("utf-8")
+            bcrypt.gensalt()) # .decode("utf-8")
         new_user = User()
         new_user.email = email
         new_user.hashed_password = hashed_password
