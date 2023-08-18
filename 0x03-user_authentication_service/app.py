@@ -2,7 +2,7 @@
 """
 Basic Flask app
 """
-from flask import Flask, abort, jsonify, make_response, request
+from flask import Flask, abort, jsonify, make_response, redirect, request
 from auth import Auth
 
 
@@ -34,7 +34,7 @@ def users():
 
 
 @app.route('/sessions', methods=['POST'])
-def sessions():
+def login():
     try:
         email = request.form.get('email')
         password = request.form.get('password')
@@ -51,6 +51,60 @@ def sessions():
         return response, 200
     except Exception as e:
         abort(401)
+
+
+@app.route('/sessions', methods=['DELETE'])
+def logout():
+    try:
+        session_id = request.cookies.get('session_id')
+
+        user = AUTH.get_user_from_session_id(session_id)
+        
+        if user:
+            AUTH.destroy_session(user.id)
+            response = redirect('/')
+            response.delete_cookie('session_id')
+            return response
+        else:
+            abort(403)
+
+    except Exception as e:
+        abort(403)
+
+
+@app.route('/profile', methods=['GET'])
+def profile():
+    try:
+        session_id = request.cookies.get('session_id')
+
+        user = AUTH.get_user_from_session_id(session_id)
+        
+        if user:
+            response = {
+                "email": user.email
+            }
+            return jsonify(response), 200
+        else:
+            abort(403)
+
+    except Exception as e:
+        abort(403)
+
+
+@app.route('/reset_password', methods=['POST'])
+def reset_password():
+    try:
+        email = request.form.get('email')
+
+        reset_token = AUTH.get_reset_password_token(email)
+        
+        response = {
+            "email": email,
+            "reset_token": reset_token
+        }
+        return jsonify(response), 200
+    except ValueError as e:
+        abort(403)
 
 
 if __name__ == "__main__":

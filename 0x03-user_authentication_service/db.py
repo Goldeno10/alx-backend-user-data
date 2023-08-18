@@ -56,7 +56,7 @@ class DB:
         """
         Finds a user
         """
-        valid_keys = ['id', 'email']
+        valid_keys = ['id', 'email', 'session_id', 'reset_token']
         invalid_keys = set(kwargs.keys()) - set(valid_keys)
 
         if invalid_keys:
@@ -69,7 +69,10 @@ class DB:
                 query = query.filter(User.id == value)
             elif key == 'email':
                 query = query.filter(User.email == value)
-
+            elif key == 'session_id':
+                query = query.filter(User.session_id == value)
+            elif key == 'reset_token':
+                query = query.filter(User.reset_token == value)
         try:
             user = query.one()
         except Exception:
