@@ -9,7 +9,6 @@ from user import User
 from sqlalchemy.orm.exc import NoResultFound
 
 
-
 def _generate_uuid():
     """
     Generate a new UUID and return its string representation.
@@ -115,11 +114,12 @@ class Auth:
             session_id (str): The session ID to look up.
 
         Returns:
-            User or None: The corresponding User object if found, otherwise None.
+            User or None: The corresponding User object if found,
+            otherwise None.
         """
         if session_id is None:
             return None
-        
+
         try:
             user = self._db.find_user_by(session_id=session_id)
             return user
@@ -134,11 +134,12 @@ class Auth:
             session_id (str): The session ID to look up.
 
         Returns:
-            User or None: The corresponding User object if found, otherwise None.
+            User or None: The corresponding User object if found,
+            otherwise None.
         """
         if session_id is None:
             return None
-        
+
         try:
             user = self._db.find_user_by(session_id=session_id)
             return user
@@ -180,7 +181,7 @@ class Auth:
         reset_token = str(uuid.uuid4())
         user.reset_token = reset_token
         self._db._session.commit()
-    
+
     def update_password(self, reset_token: str, password: str) -> None:
         """
         Update the user's password using a reset token.
