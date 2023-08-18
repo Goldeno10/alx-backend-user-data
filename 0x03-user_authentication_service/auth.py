@@ -11,10 +11,12 @@ import uuid
 def _generate_uuid():
     """
     Generate a new UUID and return its string representation.
-    This function is private to the auth module and should not be used outside of it.
+    This function is private to the auth module and should
+    not be used outside of it.
     """
     new_uuid = uuid.uuid4()
     return str(new_uuid)
+
 
 def _hash_password(password: str) -> bytes:
     """
@@ -77,11 +79,28 @@ class Auth:
             user = self._db.find_user_by(email=email)
         except NoResultFound:
             return False
-        
+
         hashed_password = user.hashed_password
-        entered_password = password.encode('utf-8')
-        print(f'==================== {entered_password} ================================')
-        print(f'==================== {user.hashed_password} ================================')
-        print(f'==================== {_hash_password(password)} ================================')
 
         return bcrypt.checkpw(password.encode('utf-8'), hashed_password)
+
+    def create_session(self, email: str) -> str:
+        """
+        Create a session for the user and return the session ID.
+
+        Args:
+            email (str): The email of the user.
+
+        Returns:
+            str: The generated session ID.
+        """
+        try:
+            user = self._db.find_user_by(email=email)
+
+            session_id = _generate_uuid()
+            user.session_id = session_id
+            self._db._session.commit()
+
+            return session_id
+        except Exception:
+            pass
