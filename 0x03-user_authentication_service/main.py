@@ -21,7 +21,7 @@ def log_in_wrong_password(email: str, password: str) -> None:
 def log_in(email: str, password: str) -> str:
     response = requests.post(
         f"{BASE_URL}/sessions", data={"email": email, "password": password})
-    assert response.status_code == 200, f"Failed to log in {response.status_code}"
+    assert response.status_code == 200, f"Failed to log in"
     return response.cookies.get("session_id")
 
 
@@ -37,6 +37,7 @@ def profile_logged(session_id: str) -> None:
     assert response.status_code == 200, \
         f"Failed to retrieve profile when logged in"
 
+
 def log_out(session_id: str) -> None:
     response = requests.delete(
         f"{BASE_URL}/sessions", cookies={"session_id": session_id})
@@ -47,7 +48,6 @@ def reset_password_token(email: str) -> str:
     response = requests.post(
         f"{BASE_URL}/reset_password", data={"email": email})
     assert response.status_code == 200, "Failed to get reset password token"
-
     return response.json()["reset_token"]
 
 
@@ -60,7 +60,7 @@ def update_password(email: str, reset_token: str, new_password: str) -> None:
             "new_password": new_password
         }
     )
-    assert response.status_code == 200, f"Failed to update password {response.status_code}"
+    assert response.status_code == 200, f"Failed to update password"
 
 
 if __name__ == "__main__":
@@ -69,20 +69,11 @@ if __name__ == "__main__":
     NEW_PASSWD = "t4rt1fl3tt3"
 
     register_user(EMAIL, PASSWD)
-    print(f'pass {1}')
     log_in_wrong_password(EMAIL, NEW_PASSWD)
-    print(f'pass {2}')
     profile_unlogged()
-    print(f'pass {3}')
     session_id = log_in(EMAIL, PASSWD)
-    print(f'pass {4}')
     profile_logged(session_id)
-    print(f'pass {5}')
     log_out(session_id)
-    print(f'pass {6}')
     reset_token = reset_password_token(EMAIL)
-    print(f'pass {7}')
     update_password(EMAIL, reset_token, NEW_PASSWD)
-    print(f'pass {8}')
     log_in(EMAIL, NEW_PASSWD)
-    print(f'pass {9}')

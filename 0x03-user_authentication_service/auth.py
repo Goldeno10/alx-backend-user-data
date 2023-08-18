@@ -181,6 +181,7 @@ class Auth:
         reset_token = str(uuid.uuid4())
         user.reset_token = reset_token
         self._db._session.commit()
+        return reset_token
 
     def update_password(self, reset_token: str, password: str) -> None:
         """
@@ -202,5 +203,3 @@ class Auth:
         user.hashed_password = hashed_password
         user.reset_token = None
         self._db._session.commit()
-
-        return reset_token
