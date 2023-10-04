@@ -39,6 +39,7 @@ def filter_datum(fields: List, redaction: str,
     return regex.sub(fr"\1={redaction}", message)
 """
 import re
+import logging
 from typing import List
 
 
@@ -50,13 +51,9 @@ def filter_datum(fields: List[str], redaction: str,
                   fr'\1={redaction}', message)
 
 
-import logging
-
-
 class RedactingFormatter(logging.Formatter):
     """ Redacting Formatter class
         """
-
     REDACTION = "***"
     FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
     SEPARATOR = ";"
