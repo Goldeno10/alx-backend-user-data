@@ -60,7 +60,14 @@ class RedactingFormatter(logging.Formatter):
     def __init__(self):
         """init function"""
         super(RedactingFormatter, self).__init__(self.FORMAT)
+        self.fields = fields or []
 
     def format(self, record: logging.LogRecord) -> str:
         """format function"""
-        NotImplementedError
+        message = super(RedactingFormatter, self).format(record)
+        for field in self.fields:
+            message = message.replace(
+                f"{field}={getattr(record, field)}",
+                f"{field}={self.REDACTION}"
+            )
+        return message
